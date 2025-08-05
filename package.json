@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-   // ↓ эти две строки нужно добавить внутри "scripts":
    "predeploy": "npm run build",
    "deploy":   "gh-pages -d dist",
     "preview": "vite preview"
@@ -20,7 +19,6 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.3",
     "vite": "^4.3.9",
-   // ↓ не забудьте установить эту зависимость:
    "gh-pages": "^5.0.0"
   }
 }
