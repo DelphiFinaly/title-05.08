@@ -65,11 +65,21 @@ export default function ExportToWord({ schedule, date, groups }) {
     // Заголовок таблицы групп
     const headerRow = new TableRow({
       children: [
-        new TableCell({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "№", bold: true })] })] }),
-        new TableCell({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Время", bold: true })] })] }),
+        new TableCell({
+          children: [
+            new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "№", bold: true })] }),
+          ],
+        }),
+        new TableCell({
+          children: [
+            new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: "Время", bold: true })] }),
+          ],
+        }),
         ...groups.map(group =>
           new TableCell({
-            children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: group, bold: true })] })],
+            children: [
+              new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: group, bold: true })] }),
+            ],
             shading: { fill: "DEEAF6" },
           })
         ),
@@ -80,16 +90,42 @@ export default function ExportToWord({ schedule, date, groups }) {
     const pairRows = PAIRS.map(pair =>
       new TableRow({
         children: [
-          new TableCell({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: String(pair.num) })] })] }),
-          new TableCell({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: pair.time })] })] }),
+          new TableCell({
+            verticalAlign: VerticalAlign.CENTER,
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [new TextRun({ text: String(pair.num) })],
+              }),
+            ],
+          }),
+          new TableCell({
+            verticalAlign: VerticalAlign.CENTER,
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.CENTER,
+                children: [new TextRun({ text: pair.time })],
+              }),
+            ],
+          }),
           ...groups.map(group => {
             const entry = rowsObj[group]?.[pair.num];
             const lines = entry
-              ? [entry.lesson, ...(Array.isArray(entry.teacher) ? entry.teacher : [entry.teacher]), entry.room, entry.online ? "(онлайн)" : ""].filter(Boolean)
+              ? [
+                  entry.lesson,
+                  ...(Array.isArray(entry.teacher) ? entry.teacher : [entry.teacher]),
+                  entry.room,
+                  entry.online ? "(онлайн)" : "",
+                ].filter(Boolean)
               : [""];
             return new TableCell({
-              verticalAlign: VerticalAlign.TOP,
-              children: lines.map(text => new Paragraph({ text, alignment: AlignmentType.LEFT })),
+              verticalAlign: VerticalAlign.CENTER,
+              children: lines.map(text =>
+                new Paragraph({
+                  alignment: AlignmentType.CENTER,
+                  children: [new TextRun({ text })],
+                })
+              ),
             });
           }),
         ],
